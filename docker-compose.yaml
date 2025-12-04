@@ -1,0 +1,68 @@
+services:
+  db:
+    image: postgres:16.6
+    env_file:
+      - .env
+    volumes:
+      - ./volume_data/postgres:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT-5432}:5432"
+
+  redis:
+    image: ghcr.io/sergelogvinov/keydb:6.3.4
+    env_file:
+      - .env
+    ports:
+      - "${REDIS_PORT-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli"," info"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 2s
+
+  rabbit:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: development
+      RABBITMQ_DEFAULT_PASS: development
+    volumes:
+      - ./volume_data/rabbitmq:/var/lib/rabbitmq
+    cpus: 0.5
+
+  back: &app
+    build: &app-build
+      context: ..
+      dockerfile: rozert-pay/Dockerfile
+    restart: always
+    command: sh -c "poetry run python manage.py migrate && poetry run python manage.py runserver 0.0.0.0:8000"
+    user: root
+    volumes: &app-volumes
+      - ./:/www/rozert-pay
+    environment: &app-env
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONPATH=/www/rozert-pay
+      - POSTGRES_HOST=db
+      - REDIS_HOST=redis
+      - POSTGRES_PORT=5432
+      - RABBITMQ_HOST=rabbit
+      - DJANGO_SETTINGS_MODULE=rozert_pay.settings
+    env_file:
+      - .env
+    ports:
+      - "${WEB_PORT}:8000"
+    depends_on:
+      - db
+      - redis
+      - rabbit
+
+  celery:
+    <<: *app
+    command: bash -c "CELERY_METRICS=1 poetry run celery -A rozert_pay.celery_app worker -l info -Q high,normal,low --pool threads -c 20"
+    ports:
+      - 5200:5200
+
+  celery-beat:
+    <<: *app
+    command: poetry run celery -A rozert_pay.celery_app beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    ports: []

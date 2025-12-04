@@ -1,0 +1,7 @@
+[MASTER]
+load-plugins=code_checks.correct_imports
+
+[MESSAGES CONTROL]
+disable=all
+enable=
+    forbidden-import,

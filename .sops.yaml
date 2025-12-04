@@ -1,0 +1,9 @@
+---
+creation_rules:
+  - path_regex: vars/secrets.*.yaml$
+    key_groups:
+      - pgp:
+          - 860896EC7FD6DB515FD8C2CD334166112D456151
+          - 139DA8C9EE5FA0EC041A4D6B28BE5E5E231474BF
+  - pgp: '860896EC7FD6DB515FD8C2CD334166112D456151'
+    gcp_kms: projects/ourservices/locations/global/keyRings/helm/cryptoKeys/helm-key

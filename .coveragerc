@@ -1,0 +1,3 @@
+[report]
+omit =
+    rozert_pay/payment/admin.py

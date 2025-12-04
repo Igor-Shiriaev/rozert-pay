@@ -1,0 +1,7 @@
+{
+  "status": "error",
+  "assets": {},
+  "chunks": {},
+  "error": "ModuleNotFoundError",
+  "message": "Module not found: Error: Can't resolve 'react-dom/client' in '/app/src/src'"
+}

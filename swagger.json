@@ -1,0 +1,737 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Payment aggregator API",
+        "version": "v1"
+    },
+    "basePath": "/api",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "HMAC": {
+            "type": "HMAC"
+        }
+    },
+    "security": [
+        {
+            "HMAC": []
+        }
+    ],
+    "paths": {
+        "/account/v1/account/": {
+            "get": {
+                "operationId": "account_v1_account_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Account"
+                        }
+                    }
+                },
+                "tags": [
+                    "account"
+                ]
+            },
+            "parameters": []
+        },
+        "/account/v1/login/": {
+            "post": {
+                "operationId": "account_v1_login_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/LoginRole"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "account"
+                ]
+            },
+            "parameters": []
+        },
+        "/account/v1/logout/": {
+            "post": {
+                "operationId": "account_v1_logout_create",
+                "description": "",
+                "parameters": [],
+                "responses": {},
+                "tags": [
+                    "account"
+                ]
+            },
+            "parameters": []
+        },
+        "/backoffice/v1/callback/": {
+            "get": {
+                "operationId": "backoffice_v1_callback_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CabinetCallback"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "backoffice"
+                ]
+            },
+            "parameters": []
+        },
+        "/backoffice/v1/callback/{id}/retry/": {
+            "post": {
+                "operationId": "backoffice_v1_callback_retry",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "backoffice"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/backoffice/v1/deposit-account/": {
+            "get": {
+                "operationId": "backoffice_v1_deposit-account_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CabinetDepositAccount"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "backoffice"
+                ]
+            },
+            "parameters": []
+        },
+        "/backoffice/v1/transaction/": {
+            "get": {
+                "operationId": "backoffice_v1_transaction_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Transaction"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "backoffice"
+                ]
+            },
+            "parameters": []
+        },
+        "/backoffice/v1/wallet/": {
+            "get": {
+                "operationId": "backoffice_v1_wallet_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Wallet"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "backoffice"
+                ]
+            },
+            "parameters": []
+        },
+        "/payment/v1/account/spei/": {
+            "post": {
+                "operationId": "spei_account_create",
+                "summary": "SPEI Deposit Account Creation",
+                "description": "\n## Create new SPEI deposit account\n\nThis method creates new deposit account for SPEI_STP.\nSPEI_STP has flow without deposit initiation and works like this:\n\n* Merchant calls this method and receives deposit_account\n* Merchant gives deposit_account to customer\n* Customer deposits money to that account\n* When money received, we send callback to merchant\n* Merchant also can get list of transactions for that account using transaction_list method.\n",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SpeiAccount"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/SpeiAccount"
+                        }
+                    }
+                },
+                "tags": [
+                    "Account"
+                ]
+            },
+            "parameters": []
+        },
+        "/payment/v1/callback/{system}/": {
+            "post": {
+                "operationId": "payment_v1_callback_create",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "payment"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "system",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/payment/v1/transaction/": {
+            "get": {
+                "operationId": "payment_v1_transaction_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Transaction"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "payment"
+                ]
+            },
+            "post": {
+                "operationId": "transaction_create",
+                "description": "\n## Create new transaction\n\n\n\n",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    }
+                },
+                "tags": [
+                    "payment"
+                ]
+            },
+            "parameters": []
+        },
+        "/payment/v1/transaction/{id}/": {
+            "get": {
+                "operationId": "payment_v1_transaction_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    }
+                },
+                "tags": [
+                    "payment"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/payment/v1/wallet/": {
+            "get": {
+                "operationId": "payment_v1_wallet_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Wallet"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "payment"
+                ]
+            },
+            "parameters": []
+        },
+        "/payment/v1/wallet/{id}/": {
+            "get": {
+                "operationId": "payment_v1_wallet_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Wallet"
+                        }
+                    }
+                },
+                "tags": [
+                    "payment"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "LoginRole": {
+            "type": "object",
+            "properties": {
+                "merchant_group_id": {
+                    "title": "Merchant group id",
+                    "type": "string",
+                    "x-nullable": true
+                },
+                "merchant_id": {
+                    "title": "Merchant id",
+                    "type": "string",
+                    "x-nullable": true
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "readOnly": true,
+                    "minLength": 1
+                }
+            },
+            "description": "\nIf user have multiple roles, you should pass which role to login as.\nIf role not passed, server will return 400 with list of supported roles to choose from.\n"
+        },
+        "Account": {
+            "required": [
+                "email"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254,
+                    "minLength": 1
+                },
+                "first_name": {
+                    "title": "First name",
+                    "type": "string",
+                    "maxLength": 150
+                },
+                "last_name": {
+                    "title": "Last name",
+                    "type": "string",
+                    "maxLength": 150
+                },
+                "role": {
+                    "$ref": "#/definitions/LoginRole"
+                }
+            }
+        },
+        "Login": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "password": {
+                    "title": "Password",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "role": {
+                    "$ref": "#/definitions/LoginRole"
+                }
+            }
+        },
+        "CabinetCallback": {
+            "required": [
+                "transaction",
+                "callback_type",
+                "target",
+                "body"
+            ],
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "title": "Created at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "transaction": {
+                    "title": "Transaction",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "callback_type": {
+                    "title": "Callback type",
+                    "type": "string",
+                    "enum": [
+                        "deposit_account_created",
+                        "deposit_received",
+                        "transaction_updated"
+                    ]
+                },
+                "target": {
+                    "title": "Target",
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "body": {
+                    "title": "Body",
+                    "type": "object"
+                },
+                "status": {
+                    "title": "Status",
+                    "type": "string",
+                    "enum": [
+                        "success",
+                        "failed",
+                        "pending"
+                    ]
+                },
+                "error": {
+                    "title": "Error",
+                    "type": "string",
+                    "x-nullable": true
+                },
+                "last_attempt_at": {
+                    "title": "Last attempt at",
+                    "type": "string",
+                    "format": "date-time",
+                    "x-nullable": true
+                },
+                "max_attempts": {
+                    "title": "Max attempts",
+                    "type": "integer",
+                    "maximum": 2147483647,
+                    "minimum": 0
+                },
+                "current_attempt": {
+                    "title": "Current attempt",
+                    "type": "integer",
+                    "maximum": 2147483647,
+                    "minimum": 0
+                }
+            }
+        },
+        "CabinetDepositAccount": {
+            "required": [
+                "customer_id",
+                "unique_account_identifier",
+                "wallet"
+            ],
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "title": "Created at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "customer_id": {
+                    "title": "Customer id",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "unique_account_identifier": {
+                    "title": "Unique account identifier",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "wallet": {
+                    "title": "Wallet",
+                    "type": "string",
+                    "format": "uuid"
+                }
+            }
+        },
+        "Transaction": {
+            "required": [
+                "wallet_id",
+                "type",
+                "amount",
+                "currency"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "readOnly": true,
+                    "minLength": 1
+                },
+                "status": {
+                    "title": "Status",
+                    "type": "string",
+                    "enum": [
+                        "initial",
+                        "success",
+                        "failed"
+                    ],
+                    "readOnly": true
+                },
+                "wallet_id": {
+                    "title": "Wallet id",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "type": {
+                    "title": "Type",
+                    "type": "string",
+                    "enum": [
+                        "deposit",
+                        "withdrawal"
+                    ]
+                },
+                "amount": {
+                    "title": "Amount",
+                    "type": "string",
+                    "format": "decimal"
+                },
+                "currency": {
+                    "title": "Currency",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "customer_id": {
+                    "title": "Customer id",
+                    "description": "Customer ID. Required for deposits for: SPEI_STP",
+                    "type": "string",
+                    "x-nullable": true
+                },
+                "deposit_account": {
+                    "title": "Deposit account",
+                    "description": "Deposit account number. <br>If presented in response, instruction must be shown to user to make deposit to this account.",
+                    "type": "string",
+                    "readOnly": true,
+                    "minLength": 1
+                },
+                "decline_code": {
+                    "title": "Decline code",
+                    "type": "string",
+                    "readOnly": true,
+                    "minLength": 1
+                },
+                "decline_reason": {
+                    "title": "Decline reason",
+                    "type": "string",
+                    "readOnly": true,
+                    "minLength": 1
+                },
+                "created_at": {
+                    "title": "Created at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "updated_at": {
+                    "title": "Updated at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                }
+            }
+        },
+        "Balance": {
+            "required": [
+                "currency",
+                "balance"
+            ],
+            "type": "object",
+            "properties": {
+                "currency": {
+                    "title": "Currency",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "balance": {
+                    "title": "Balance",
+                    "type": "string",
+                    "format": "decimal"
+                }
+            }
+        },
+        "Wallet": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "readOnly": true,
+                    "minLength": 1
+                },
+                "created_at": {
+                    "title": "Created at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "updated_at": {
+                    "title": "Updated at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "balances": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Balance"
+                    },
+                    "readOnly": true
+                }
+            }
+        },
+        "SpeiAccount": {
+            "required": [
+                "wallet",
+                "customer_id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "created_at": {
+                    "title": "Created at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "wallet": {
+                    "title": "Wallet",
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "customer_id": {
+                    "title": "Customer id",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "deposit_account": {
+                    "title": "Deposit account",
+                    "description": "Deposit account for customer. Ask customer to make deposit using this account.",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        }
+    }
+}

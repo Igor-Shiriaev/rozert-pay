@@ -1,0 +1,3 @@
+from . import Factory, T
+
+class DjangoModelFactory(Factory[T]): ...

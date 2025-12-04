@@ -1,0 +1,44 @@
+services:
+  base:
+    image: registry.k8s.io/pause:3.10
+  postgres:
+    image: ghcr.io/sergelogvinov/postgresql:16.6
+    shm_size: 1g
+    network_mode: "service:base"
+    command: -c fsync=off
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=development
+      - POSTGRES_PASSWORD=development
+      - POSTGRES_DB=development
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U rozert_pay -d rozert_pay -c 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  redis:
+    image: ghcr.io/sergelogvinov/keydb:6.3.4
+    network_mode: "service:base"
+    healthcheck:
+      test: ["CMD", "redis-cli"," info"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  unittest:
+    build:
+      context: ../
+      target: release
+      args:
+        - ENV=dev
+      dockerfile: rozert-pay/Dockerfile
+    network_mode: "service:base"
+    command: /pause
+    environment:
+      - DJANGO_SETTINGS_MODULE=rozert_pay.settings_unittest
+    depends_on:
+      - postgres
+      - redis

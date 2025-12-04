@@ -1,0 +1,2697 @@
+openapi: 3.0.3
+info:
+  title: Rozert Pay
+  version: 1.0.0
+  description: Rozert Payment API
+paths:
+  /api/account/v1/account/:
+    get:
+      operationId: api_account_v1_account_retrieve
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: ''
+  /api/account/v1/login/:
+    post:
+      operationId: api_account_v1_login_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - CSRFExemptSessionAuthentication: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginRole'
+          description: ''
+  /api/account/v1/logout/:
+    post:
+      operationId: api_account_v1_logout_create
+      tags:
+      - api
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/backoffice/v1/alerts/{id}/acknowledge/:
+    post:
+      operationId: api_backoffice_v1_alerts_acknowledge_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this limit alert.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LimitAlert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LimitAlert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LimitAlert'
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LimitAlert'
+          description: ''
+  /api/backoffice/v1/alerts/acknowledge-all/:
+    post:
+      operationId: api_backoffice_v1_alerts_acknowledge_all_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LimitAlert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LimitAlert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LimitAlert'
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LimitAlert'
+          description: ''
+  /api/backoffice/v1/alerts/unacknowledged/:
+    get:
+      operationId: api_backoffice_v1_alerts_unacknowledged_retrieve
+      tags:
+      - api
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LimitAlert'
+          description: ''
+  /api/backoffice/v1/callback/:
+    get:
+      operationId: api_backoffice_v1_callback_list
+      tags:
+      - api
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CabinetCallback'
+          description: ''
+  /api/backoffice/v1/callback/{id}/retry/:
+    post:
+      operationId: api_backoffice_v1_callback_retry_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this outcoming callback.
+        required: true
+      tags:
+      - api
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/backoffice/v1/deposit-account/:
+    get:
+      operationId: api_backoffice_v1_deposit_account_list
+      tags:
+      - api
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CabinetDepositAccount'
+          description: ''
+  /api/backoffice/v1/transaction/:
+    get:
+      operationId: api_backoffice_v1_transaction_list
+      tags:
+      - api
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/backoffice/v1/wallet/:
+    get:
+      operationId: api_backoffice_v1_wallet_list
+      tags:
+      - api
+      security:
+      - CSRFExemptSessionAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Wallet'
+          description: ''
+  /api/payment/v1/appex/deposit/:
+    post:
+      operationId: appex.deposit
+      summary: Create Appex deposit transaction
+      tags:
+      - Appex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppexDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AppexDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AppexDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/appex/withdraw/card-data/:
+    post:
+      operationId: appex.withdraw.card-data
+      summary: Create Appex withdrawal transaction by card data
+      tags:
+      - Appex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppexCardWithdraw'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AppexCardWithdraw'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AppexCardWithdraw'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/appex/withdraw/card-token/:
+    post:
+      operationId: appex.withdraw.card-token
+      description: |2
+
+        Card token can be obtained from first successfull deposit transaction.
+        See card_token parameter in transaction response.
+      summary: Create Appex withdrawal transaction by card token.
+      tags:
+      - Appex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppexCardTokenWithdraw'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AppexCardTokenWithdraw'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AppexCardTokenWithdraw'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/bitso-spei/create_instruction/:
+    post:
+      operationId: Create Bitso SPEI deposit instruction
+      description: |2-
+
+        Request to create specific account for Bitso SPEI deposit for merchant customer.
+        New account is created for each new customer_id.
+
+        Client should deposit funds to provided account.
+        When client made a deposit, callback will be sent to merchant.
+      tags:
+      - Bitso SPEI
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestInstruction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RequestInstruction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RequestInstruction'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositAccountInstructionResponse'
+          description: ''
+  /api/payment/v1/bitso-spei/withdraw/:
+    post:
+      operationId: Create STP SPEI withdrawal transaction
+      tags:
+      - Bitso SPEI
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BitsoWithdrawalTransactionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BitsoWithdrawalTransactionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BitsoWithdrawalTransactionRequest'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/cardpay-applepay/deposit/:
+    post:
+      operationId: cardpay_applepay.deposit
+      summary: Create cardpay applepay deposit transaction
+      tags:
+      - Cardpay Applepay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/cardpay-applepay/merchant_validation/:
+    post:
+      operationId: cardpay_applepay.merchant_validation
+      summary: Merchant validation
+      tags:
+      - Cardpay Applepay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayMerchantValidationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayMerchantValidationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayMerchantValidationRequest'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/cardpay-applepay/withdraw/:
+    post:
+      operationId: cardpay_applepay.withdraw
+      summary: Create Cardpay Applepay withdrawal transaction
+      tags:
+      - Cardpay Applepay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayWithdraw'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayWithdraw'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CardpayApplepayWithdraw'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/cardpay-cards/deposit/:
+    post:
+      operationId: cardpay_cards.deposit
+      summary: Create deposit transaction
+      tags:
+      - Cardpay Bankcard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/cardpay-cards/deposit_card_token/:
+    post:
+      operationId: cardpay_cards.deposit_2
+      summary: Create deposit transaction using card token from previous deposits
+      tags:
+      - Cardpay Bankcard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardDepositByToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardDepositByToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardDepositByToken'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/cardpay-cards/withdraw/card-data/:
+    post:
+      operationId: cardpay_cards.withdraw.card-data
+      summary: Create Cardpay Bankcard withdrawal transaction by card data
+      tags:
+      - Cardpay Bankcard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardWithdraw'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardWithdraw'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardWithdraw'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/cardpay-cards/withdraw/card-token/:
+    post:
+      operationId: cardpay_cards.withdraw.card-token
+      description: "\nCard token can be obtained from first successfull deposit transaction.\n\
+        See card_token parameter in transaction response.\n    "
+      summary: Create Cardpay Bankcard withdrawal transaction by card token.
+      tags:
+      - Cardpay Bankcard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardWithdrawByToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardWithdrawByToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CardpayBankcardWithdrawByToken'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/conekta-oxxo/deposit/:
+    post:
+      operationId: Create Conekta OXXO deposit transaction
+      tags:
+      - Conekta OXXO
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConektaOxxoDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConektaOxxoDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConektaOxxoDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/d24-mercadopago/deposit/:
+    post:
+      operationId: Create deposit transaction
+      tags:
+      - D24 MercadoPago
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/D24MercadoPagoDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/D24MercadoPagoDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/D24MercadoPagoDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/d24-mercadopago/withdraw/:
+    post:
+      operationId: Create withdrawal transaction
+      tags:
+      - D24 MercadoPago
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/D24MercadoPagoWithdraw'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/D24MercadoPagoWithdraw'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/D24MercadoPagoWithdraw'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/ilixium/deposit/:
+    post:
+      operationId: ilixium.deposit
+      summary: Create Ilixium deposit transaction
+      tags:
+      - Ilixium
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IlixiumDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IlixiumDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IlixiumDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/ilixium/withdraw/:
+    post:
+      operationId: ilixium.withdraw
+      summary: Create Ilixium withdrawal transaction
+      tags:
+      - Ilixium
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IlixiumWithdraw'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IlixiumWithdraw'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IlixiumWithdraw'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/paycash/deposit/:
+    post:
+      operationId: Create Paycash deposit transaction
+      tags:
+      - Paycash
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositTransactionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DepositTransactionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DepositTransactionRequest'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/paypal/deposit/:
+    post:
+      operationId: Create PayPal deposit transaction
+      tags:
+      - PayPal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaypalDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PaypalDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PaypalDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/paypal/withdraw/:
+    post:
+      operationId: Create Paypal withdrawal transaction
+      description: "\nCreates new withdrawal from merchant wallet to customer account.\n\
+        Supported by: paypal\n        "
+      summary: Create withdrawal transaction
+      tags:
+      - PayPal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaypalWithdrawalTransactionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PaypalWithdrawalTransactionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PaypalWithdrawalTransactionRequest'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/stp-codi/deposit/:
+    post:
+      operationId: Create STP CODI deposit transaction
+      tags:
+      - STP CODI
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StpCodi'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StpCodi'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StpCodi'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/stp-spei/create_instruction/:
+    post:
+      operationId: Create STP SPEI deposit instruction
+      description: |2-
+
+        Request to create specific account for deposit for merchant client.
+        New account is created for each new customer_id.
+
+        Client should deposit funds to provided account.
+        When client made a deposit, callback will be sent to merchant
+      tags:
+      - STP SPEI
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestInstruction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RequestInstruction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RequestInstruction'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_InstructionResponse'
+          description: ''
+  /api/payment/v1/stp-spei/withdraw/:
+    post:
+      operationId: Create STP SPEI withdrawal transaction_2
+      tags:
+      - STP SPEI
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WithdrawalTransactionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WithdrawalTransactionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WithdrawalTransactionRequest'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          description: No response body
+  /api/payment/v1/transaction/:
+    get:
+      operationId: api_payment_v1_transaction_list
+      summary: List transactions
+      tags:
+      - Transactions
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/transaction/{uuid}/:
+    get:
+      operationId: api_payment_v1_transaction_retrieve
+      summary: Get transaction by ID
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Transactions
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+  /api/payment/v1/wallet/:
+    get:
+      operationId: api_payment_v1_wallet_list
+      summary: List wallets
+      tags:
+      - Wallet
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Wallet'
+          description: ''
+  /api/payment/v1/wallet/{id}/:
+    get:
+      operationId: api_payment_v1_wallet_retrieve
+      summary: Get wallet by ID
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this wallet.
+        required: true
+      tags:
+      - Wallet
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+  /api/payment/v1/worldpay/deposit/:
+    post:
+      operationId: worldpay.deposit
+      summary: Create Worldpay deposit transaction
+      tags:
+      - Worldpay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorldpayDeposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorldpayDeposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorldpayDeposit'
+        required: true
+      security:
+      - HMACAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: ''
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          allOf:
+          - $ref: '#/components/schemas/LoginRole'
+          readOnly: true
+      required:
+      - email
+      - role
+    AppexCardTokenWithdraw:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserDataSerializerOptional'
+          nullable: true
+        card:
+          $ref: '#/components/schemas/_CardTokenSerialzer'
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - wallet_id
+    AppexCardWithdraw:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserDataSerializerOptional'
+          nullable: true
+        card:
+          allOf:
+          - $ref: '#/components/schemas/_CardNoCVV'
+          description: Card details without CVV
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - wallet_id
+    AppexDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        card:
+          allOf:
+          - $ref: '#/components/schemas/_Card'
+          description: Card details
+        user_data:
+          $ref: '#/components/schemas/AppexUserData'
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - user_data
+      - wallet_id
+    AppexUserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address
+        phone:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        post_code:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        language:
+          type: string
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+      required:
+      - email
+      - language
+    Balance:
+      type: object
+      properties:
+        currency:
+          type: string
+        operational_balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        frozen_balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        pending_balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        available_balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+      required:
+      - available_balance
+      - currency
+      - frozen_balance
+      - operational_balance
+      - pending_balance
+    BitsoWithdrawalTransactionRequest:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          nullable: true
+          description: 'Customer ID. Required for deposits for: SPEI_STP'
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        withdraw_to_account:
+          type: string
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserDataSerializerOptional'
+          nullable: true
+      required:
+      - amount
+      - currency
+      - wallet_id
+      - withdraw_to_account
+    CabinetCallback:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          type: integer
+          readOnly: true
+        transaction:
+          type: integer
+        callback_type:
+          $ref: '#/components/schemas/CallbackTypeEnum'
+        target:
+          type: string
+          format: uri
+          maxLength: 200
+        body: {}
+        status:
+          $ref: '#/components/schemas/CabinetCallbackStatusEnum'
+        error:
+          type: string
+          nullable: true
+        last_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+        max_attempts:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        current_attempt:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - body
+      - callback_type
+      - created_at
+      - id
+      - target
+      - transaction
+    CabinetCallbackStatusEnum:
+      enum:
+      - success
+      - failed
+      - pending
+      type: string
+      description: |-
+        * `success` - Success
+        * `failed` - Failed
+        * `pending` - Pending
+    CabinetDepositAccount:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          type: integer
+          readOnly: true
+        customer_id:
+          type: string
+          maxLength: 100
+        unique_account_identifier:
+          type: string
+          maxLength: 100
+        wallet:
+          type: integer
+      required:
+      - created_at
+      - customer_id
+      - id
+      - unique_account_identifier
+      - wallet
+    CallbackTypeEnum:
+      enum:
+      - deposit_account_created
+      - deposit_received
+      - transaction_updated
+      type: string
+      description: |-
+        * `deposit_account_created` - Deposit Account Created
+        * `deposit_received` - Deposit Received
+        * `transaction_updated` - Transaction Updated
+    CardBrowserData:
+      type: object
+      properties:
+        accept_header:
+          type: string
+          maxLength: 255
+        javascript_enabled:
+          type: boolean
+        java_enabled:
+          type: boolean
+        language:
+          type: string
+        screen_height:
+          type: integer
+        screen_width:
+          type: integer
+        time_difference:
+          type: string
+        user_agent:
+          type: string
+      required:
+      - accept_header
+      - java_enabled
+      - javascript_enabled
+      - language
+      - screen_height
+      - screen_width
+      - time_difference
+      - user_agent
+    CardpayApplepayDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/UserData'
+        encrypted_data:
+          type: string
+          description: This data should be passed from client side
+      required:
+      - amount
+      - currency
+      - customer_id
+      - encrypted_data
+      - user_data
+      - wallet_id
+    CardpayApplepayMerchantValidationRequest:
+      type: object
+      properties:
+        merchant_identifier:
+          type: string
+        domain:
+          type: string
+        validation_url:
+          type: string
+          format: uri
+        wallet_id:
+          type: string
+          format: uuid
+      required:
+      - domain
+      - merchant_identifier
+      - validation_url
+      - wallet_id
+    CardpayApplepayWithdraw:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserDataSerializerOptional'
+          nullable: true
+        encrypted_data:
+          type: string
+          description: This data should be passed from client side
+      required:
+      - amount
+      - currency
+      - customer_id
+      - encrypted_data
+      - wallet_id
+    CardpayBankcardDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        card:
+          allOf:
+          - $ref: '#/components/schemas/_Card'
+          description: Card details
+        user_data:
+          $ref: '#/components/schemas/CardpayBankcardWithdrawUserData'
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - user_data
+      - wallet_id
+    CardpayBankcardDepositByToken:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        card:
+          $ref: '#/components/schemas/_CardTokenSerialzer'
+        user_data:
+          $ref: '#/components/schemas/CardpayBankcardWithdrawUserData'
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - user_data
+      - wallet_id
+    CardpayBankcardWithdraw:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/CardpayBankcardWithdrawUserData'
+        card:
+          allOf:
+          - $ref: '#/components/schemas/_CardNoCVV'
+          description: Card details without CVV
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - user_data
+      - wallet_id
+    CardpayBankcardWithdrawByToken:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserDataSerializerOptional'
+          nullable: true
+        card:
+          $ref: '#/components/schemas/_CardTokenSerialzer'
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - wallet_id
+    CardpayBankcardWithdrawUserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address
+        phone:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        post_code:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        language:
+          type: string
+          nullable: true
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+      required:
+      - email
+    ConektaOxxoDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          nullable: true
+          description: External customer id
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/ConektaOxxoUserData'
+      required:
+      - amount
+      - currency
+      - redirect_url
+      - user_data
+      - wallet_id
+    ConektaOxxoUserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address
+        phone:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        post_code:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        language:
+          type: string
+          nullable: true
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+      required:
+      - email
+      - first_name
+      - last_name
+      - phone
+    D24MercadoPagoDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          nullable: true
+          description: External customer id
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/D24MercadoPagoDepositUserData'
+        mexican_curp:
+          type: string
+          maxLength: 18
+          minLength: 18
+      required:
+      - amount
+      - currency
+      - mexican_curp
+      - redirect_url
+      - user_data
+      - wallet_id
+    D24MercadoPagoDepositUserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address
+        phone:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        post_code:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        country:
+          type: string
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        language:
+          type: string
+          nullable: true
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+      required:
+      - country
+      - email
+      - first_name
+      - last_name
+      - phone
+    D24MercadoPagoWithdraw:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          nullable: true
+          description: 'Customer ID. Required for deposits for: SPEI_STP'
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        withdraw_to_account:
+          type: string
+          description: CLABE
+          maxLength: 18
+          minLength: 18
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/D24MercadoPagoWithdrawUserData'
+        mexican_curp:
+          type: string
+          maxLength: 18
+          minLength: 18
+      required:
+      - amount
+      - currency
+      - mexican_curp
+      - user_data
+      - wallet_id
+      - withdraw_to_account
+    D24MercadoPagoWithdrawUserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          nullable: true
+          description: Customer email address
+        phone:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+        last_name:
+          type: string
+        post_code:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        country:
+          type: string
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        language:
+          type: string
+          nullable: true
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+      required:
+      - country
+      - first_name
+      - last_name
+    DepositAccountInstructionResponse:
+      type: object
+      properties:
+        deposit_account:
+          type: string
+          description: Deposit account number for customer
+        customer_id:
+          type: string
+          format: uuid
+          description: Customer ID on Rozert side
+      required:
+      - customer_id
+      - deposit_account
+    DepositTransactionRequest:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          nullable: true
+          description: External customer id
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+      required:
+      - amount
+      - currency
+      - wallet_id
+    DepositTypeEnum:
+      enum:
+      - app
+      - qr_code
+      type: string
+      description: |-
+        * `app` - App
+        * `qr_code` - Qr Code
+    FormData:
+      type: object
+      properties:
+        action_url:
+          type: string
+          format: uri
+          description: URL to send form data to / redirect user.
+        method:
+          allOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          description: |-
+            Method to send form data. If get - user should be redirected, if post - form data from `fields` should be submitted.
+
+            * `get` - get
+            * `post` - post
+        fields:
+          type: object
+          additionalProperties: {}
+          description: Form fields to send to payment system. In case of POST method
+      required:
+      - action_url
+      - fields
+      - method
+    IlixiumDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        card:
+          allOf:
+          - $ref: '#/components/schemas/_Card'
+          description: Card details
+        user_data:
+          $ref: '#/components/schemas/IlixiumUserData'
+        browser_data:
+          $ref: '#/components/schemas/CardBrowserData'
+      required:
+      - amount
+      - browser_data
+      - card
+      - currency
+      - customer_id
+      - user_data
+      - wallet_id
+    IlixiumUserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address
+        phone:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+        language:
+          type: string
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+        province:
+          type: string
+          nullable: true
+      required:
+      - address
+      - city
+      - country
+      - email
+      - first_name
+      - ip_address
+      - language
+      - last_name
+      - phone
+      - post_code
+    IlixiumWithdraw:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/IlixiumUserData'
+        beneficiary_account_number:
+          type: string
+        beneficiary_bank_code:
+          type: string
+        beneficiary_sort_code:
+          type: string
+      required:
+      - amount
+      - beneficiary_account_number
+      - beneficiary_bank_code
+      - beneficiary_sort_code
+      - currency
+      - customer_id
+      - user_data
+      - wallet_id
+    Instruction:
+      type: object
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/InstructionTypeEnum'
+          description: "\nInstruction type:\n\n* **instruction_file** - File should\
+            \ be downloaded from `link` and given to user.\n  User makes deposit according\
+            \ to instruction in file.\n\n* **instruction_qr_code** - QR code should\
+            \ be shown to user. QR code in response is base64 encoded.\n\n* **instruction_reference**\
+            \ - Reference number should be shown to user. User makes deposit using\
+            \ this reference number.\n        \n\n* `instruction_file` - Instruction\
+            \ File\n* `instruction_qr_code` - Instruction QR Code\n* `instruction_deposit_account`\
+            \ - Instruction Deposit Account\n* `instruction_reference` - Instruction\
+            \ Reference"
+        link:
+          type: string
+          format: uri
+        qr_code:
+          type: string
+          description: Base64 encoded QR code
+        reference:
+          type: string
+          description: 'Reference number for deposit. For: INSTRUCTION_REFERENCE type.'
+        deposit_account:
+          type: string
+          description: Deposit account number for customer
+      required:
+      - type
+    InstructionTypeEnum:
+      enum:
+      - instruction_file
+      - instruction_qr_code
+      - instruction_deposit_account
+      - instruction_reference
+      type: string
+      description: "* **instruction_file** - File should be downloaded from `link`\
+        \ and given to user.\n  User makes deposit according to instruction in file.\n\
+        \n* **instruction_qr_code** - QR code should be shown to user. QR code in\
+        \ response is base64 encoded.\n\n* **instruction_reference** - Reference number\
+        \ should be shown to user. User makes deposit using this reference number.\n\
+        \        \n\n* `instruction_file` - Instruction File\n* `instruction_qr_code`\
+        \ - Instruction QR Code\n* `instruction_deposit_account` - Instruction Deposit\
+        \ Account\n* `instruction_reference` - Instruction Reference"
+    LimitAlert:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        is_critical:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+        limit_url:
+          type: string
+          readOnly: true
+        transaction_url:
+          type: string
+          readOnly: true
+        text:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - description
+      - id
+      - is_critical
+      - limit_url
+      - text
+      - transaction_url
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          $ref: '#/components/schemas/LoginRole'
+      required:
+      - email
+      - password
+    LoginRole:
+      type: object
+      properties:
+        merchant_group_id:
+          type: string
+          nullable: true
+        merchant_id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          readOnly: true
+      required:
+      - name
+    MethodEnum:
+      enum:
+      - get
+      - post
+      type: string
+      description: |-
+        * `get` - get
+        * `post` - post
+    PaypalDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          nullable: true
+          description: External customer id
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/UserData'
+      required:
+      - amount
+      - currency
+      - user_data
+      - wallet_id
+    PaypalWithdrawalTransactionRequest:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          nullable: true
+          description: 'Customer ID. Required for deposits for: SPEI_STP'
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        withdraw_to_account:
+          type: string
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserDataSerializerOptional'
+          nullable: true
+      required:
+      - amount
+      - currency
+      - wallet_id
+      - withdraw_to_account
+    RequestInstruction:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          description: Unique customer identificator
+        wallet_id:
+          type: string
+          format: uuid
+          description: Merchant wallet ID
+      required:
+      - customer_id
+      - wallet_id
+    StpCodi:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          nullable: true
+          description: External customer id
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          $ref: '#/components/schemas/UserData'
+        deposit_type:
+          allOf:
+          - $ref: '#/components/schemas/DepositTypeEnum'
+          default: app
+      required:
+      - amount
+      - currency
+      - user_data
+      - wallet_id
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/TransactionResponseStatusEnum'
+        decline_code:
+          type: string
+        decline_reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        instruction:
+          allOf:
+          - $ref: '#/components/schemas/Instruction'
+          nullable: true
+          description: 'Instruction for customer. Required for deposits for: paycash'
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback URL for payment system to notify about transaction
+            status change.
+        customer_id:
+          type: string
+          nullable: true
+          description: Internal customer ID
+        external_customer_id:
+          type: string
+          nullable: true
+          description: External customer ID (provided by merchant)
+        type:
+          $ref: '#/components/schemas/TransactionResponseTypeEnum'
+        currency:
+          type: string
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        form:
+          allOf:
+          - $ref: '#/components/schemas/FormData'
+          nullable: true
+          description: Form data for redirecting user to payment system. If presented,
+            merchant customer should be redirected or form data must be submitted.
+        external_account_id:
+          type: string
+          nullable: true
+          description: External account of user performed deposit. Payment system
+            specific.
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserData'
+          nullable: true
+        card_token:
+          type: string
+          nullable: true
+          description: For card payment systems, this is the token of the card used
+            for deposit.You should store this token and use it for withdrawals when
+            needed.
+      required:
+      - amount
+      - created_at
+      - currency
+      - decline_code
+      - decline_reason
+      - id
+      - status
+      - type
+      - updated_at
+    TransactionResponseStatusEnum:
+      enum:
+      - pending
+      - success
+      - failed
+      - refunded
+      - charged_back
+      - charged_back_reversal
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `success` - Success
+        * `failed` - Failed
+        * `refunded` - Refunded
+        * `charged_back` - Charged Back
+        * `charged_back_reversal` - Charged Back Reversal
+    TransactionResponseTypeEnum:
+      enum:
+      - deposit
+      - withdrawal
+      type: string
+      description: |-
+        * `deposit` - Deposit
+        * `withdrawal` - Withdrawal
+    UserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address
+        phone:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+        language:
+          type: string
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        province:
+          type: string
+          nullable: true
+      required:
+      - address
+      - city
+      - country
+      - email
+      - first_name
+      - last_name
+      - phone
+      - post_code
+    UserDataSerializerOptional:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          nullable: true
+          description: Customer email address
+        phone:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        post_code:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        language:
+          type: string
+          description: Language code
+          maxLength: 10
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/Balance'
+          readOnly: true
+      required:
+      - balances
+      - created_at
+      - id
+      - updated_at
+    WithdrawalTransactionRequest:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          nullable: true
+          description: 'Customer ID. Required for deposits for: SPEI_STP'
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        withdraw_to_account:
+          type: string
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        user_data:
+          allOf:
+          - $ref: '#/components/schemas/UserDataSerializerOptional'
+          nullable: true
+      required:
+      - amount
+      - currency
+      - wallet_id
+      - withdraw_to_account
+    WorldpayDeposit:
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: Wallet ID. Will be provided by rozert.
+        customer_id:
+          type: string
+          description: Customer unique ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          maxLength: 3
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Redirect URL for payment system to redirect user after payment.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Callback url for payment system
+        card:
+          allOf:
+          - $ref: '#/components/schemas/_Card'
+          description: Card details
+        user_data:
+          $ref: '#/components/schemas/WorldpayUserData'
+      required:
+      - amount
+      - card
+      - currency
+      - customer_id
+      - user_data
+      - wallet_id
+    WorldpayUserData:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address
+        phone:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        post_code:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+          nullable: true
+        address:
+          type: string
+        language:
+          type: string
+          nullable: true
+          description: Language code
+          maxLength: 10
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        ip_address:
+          type: string
+        province:
+          type: string
+          nullable: true
+      required:
+      - address
+      - city
+      - country
+      - email
+      - ip_address
+      - post_code
+    _Card:
+      type: object
+      properties:
+        card_num:
+          type: string
+          description: Card number
+          pattern: ^\d{10,20}$
+        card_expiration:
+          type: string
+          description: Card expiration date
+          pattern: ^(0[1-9]|1[0-2])/(\d{2}|\d{4})$
+        card_holder:
+          type: string
+          description: Card holder name
+        card_cvv:
+          type: string
+          nullable: true
+          description: Card CVV
+          pattern: ^\d*$
+      required:
+      - card_cvv
+      - card_expiration
+      - card_holder
+      - card_num
+    _CardNoCVV:
+      type: object
+      properties:
+        card_num:
+          type: string
+          description: Card number
+          pattern: ^\d{10,20}$
+        card_expiration:
+          type: string
+          description: Card expiration date
+          pattern: ^(0[1-9]|1[0-2])/(\d{2}|\d{4})$
+        card_holder:
+          type: string
+          description: Card holder name
+      required:
+      - card_expiration
+      - card_holder
+      - card_num
+    _CardTokenSerialzer:
+      type: object
+      properties:
+        card_token:
+          type: string
+          format: uuid
+      required:
+      - card_token
+    _InstructionResponse:
+      type: object
+      properties:
+        deposit_account:
+          type: string
+          description: Deposit account number for customer
+        customer_id:
+          type: string
+          format: uuid
+          description: Customer ID on Rozert side
+      required:
+      - customer_id
+      - deposit_account
+  securitySchemes:
+    CSRFExemptSessionAuthentication: []
+    HMACAuthentication:
+    - type: apiKey
+      in: header
+      name: X-Merchant-Id
+    - type: apiKey
+      in: header
+      name: X-Signature
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
