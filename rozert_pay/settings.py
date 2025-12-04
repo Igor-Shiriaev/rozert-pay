@@ -41,8 +41,8 @@ SECRET_KEY = "django-insecure-haxf()&@o0jp&dmu-c9=q$bugrsm)ss(eel)1%mnq(zw@duvf$
 # SECURITY WARNING: don't run with debug turned on in production!
 _DEBUG = os.environ.get("DEBUG", "True")
 DEBUG = _DEBUG.lower() in ("true", "1", "yes", "t", "y")
-
 DEBUG = False
+
 ALLOWED_HOSTS: list[str] = ["*"]
 
 
@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     "rozert_pay.account",
 ]
 
+ROOT_URLCONF = "rozert_pay.urls"
+
 MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "rozert_pay.common.middlewares.LogResponseMiddleware",
@@ -82,8 +84,6 @@ MIDDLEWARE = [
     "auditlog.middleware.AuditlogMiddleware",
 ]
 
-ROOT_URLCONF = "rozert_pay.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -92,33 +92,16 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
+                "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = "rozert_pay.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("POSTGRES_DATABASE", "development"),
-        "USER": os.environ.get("POSTGRES_USER", "development"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "JONH_DOE"),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "PORT": int(os.environ.get("POSTGRES_PORT", "5432")),
-    },
-}
-
 REDIS_PASSWORD = get_secrets_value("REDIS_PASSWORD", getenv("REDIS_PASSWORD", ""))
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -148,6 +131,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("POSTGRES_DATABASE", "development"),
+        "USER": os.environ.get("POSTGRES_USER", "development"),
+        "PASSWORD": os.environ.get("KAKOYTO_PASSWORD", "JONH_DOE"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": int(os.environ.get("POSTGRES_PORT", "5432")),
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -176,12 +169,12 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST", "localhost")
-RABBITMQ_USER = os.environ.get("RABBITMQ_USER", "development")
 RABBITMQ_PASSWORD = os.environ.get("RABBITMQ_PASSWORD", "development")
 CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672//"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST", "localhost")
+RABBITMQ_USER = os.environ.get("RABBITMQ_USER", "development")
+
 
 
 USE_JSON_LOGGING = os.environ.get("USE_JSON_LOGGING", False)
@@ -223,13 +216,13 @@ if getenv("DJANGO_QUERY_LOG"):
         "propagate": False,
     }
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
 
 _IS_PRODUCTION = os.environ.get("IS_PRODUCTION", "False")
 IS_PRODUCTION = _IS_PRODUCTION.lower() in ("true", "1", "yes", "t", "y")
 
-REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-}
 
 
 SPECTACULAR_SETTINGS = {
@@ -239,12 +232,12 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
+IS_UNITTESTS = False
+
 
 SENTRY_DSN = os.environ.get("SENTRY_DSN", None)
 
 EXTERNAL_ROZERT_HOST = "https://development.com"
-
-IS_UNITTESTS = False
 
 if IS_PRODUCTION:
     BETMASTER_BASE_URL = "https://development.com/"
