@@ -135,7 +135,7 @@ class PaymentSystemController(Generic[T_Client, T_SandboxClient]):
                     )
                     .get(id=trx_id)
                 )
-                assert trx.currency == "MXN", "Currency must be MXN"
+                assert trx.currency == "MXN"
 
                 if trx.status != TransactionStatus.PENDING:
                     logger.info(
