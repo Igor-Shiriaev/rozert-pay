@@ -170,11 +170,10 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 RABBITMQ_PASSWORD = os.environ.get("RABBITMQ_PASSWORD", "development")
-CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672//"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST", "localhost")
 RABBITMQ_USER = os.environ.get("RABBITMQ_USER", "development")
-
+CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672//"
 
 
 USE_JSON_LOGGING = os.environ.get("USE_JSON_LOGGING", False)
@@ -222,7 +221,6 @@ REST_FRAMEWORK = {
 
 _IS_PRODUCTION = os.environ.get("IS_PRODUCTION", "False")
 IS_PRODUCTION = _IS_PRODUCTION.lower() in ("true", "1", "yes", "t", "y")
-
 
 
 SPECTACULAR_SETTINGS = {
