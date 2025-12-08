@@ -9,7 +9,7 @@ services:
       - "${DB_PORT-5432}:5432"
 
   redis:
-    image: ghcr.io/sergelogvinov/keydb:6.3.4
+    image: redis:7-alpine
     env_file:
       - .env
     ports:
